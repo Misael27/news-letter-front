@@ -1,5 +1,4 @@
 import axios from 'axios'
-import { debug } from 'webpack';
 
 const client = axios.create({ baseURL: 'http://localhost:5202/api' });
 
@@ -17,8 +16,7 @@ const login = async (email, password) => {
         email,
         password
     });
-    debugger;
-    if (response.data.accessToken) {
+    if (response.data.token) {
         localStorage.setItem("user", JSON.stringify(response.data));
     }
     return response.data;
@@ -26,8 +24,8 @@ const login = async (email, password) => {
 
 const authHeader = () => {
     const user = JSON.parse(localStorage.getItem("user"));
-    if (user && user.accessToken) {
-        return { "Authorization": `bearer ${user.accessToken}` };
+    if (user && user.token) {
+        return { "Authorization": `bearer ${user.token}` };
     } else {
         return {};
     }

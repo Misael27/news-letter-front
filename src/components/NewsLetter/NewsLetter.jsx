@@ -4,7 +4,7 @@ import ReactHtmlParser from 'react-html-parser';
 import { Card, Stack, Button, Row, Col } from 'react-bootstrap';
 import Container from 'react-bootstrap/Container';
 import moment from "moment"
-import { BsFillPencilFill, BsFillTrashFill } from "react-icons/bs";
+import { BsFillPencilFill, BsFillTrashFill, BsFillArrowLeftSquareFill } from "react-icons/bs";
 import { useNavigate } from 'react-router-dom';
 import Toastm from '../Toast/Toastm';
 import { removeNewsLetterApi } from '../../api/NewsLetterApi';
@@ -14,6 +14,10 @@ const NewsLetter = ({ id, title, htmlBody, createdAt }) => {
     const navigate = useNavigate();
     const onHandleEdit = () => {
         navigate(`/newsletter/upsert/${id}`);
+    }
+
+    const onHandleReturn = () => {
+        navigate('/');
     }
 
     const onHandleRemove = () => {
@@ -60,7 +64,7 @@ const NewsLetter = ({ id, title, htmlBody, createdAt }) => {
                 <Card.Body>
                     <Card.Title><h1>{title}</h1></Card.Title>
                     <Card.Subtitle className="mb-3 text-muted">{moment(createdAt).format("YYYY-MM-DD h:mm a")}</Card.Subtitle>
-                    <Stack className="text-center">
+                    <Stack>
                         <Row>
                             <Col md={{ span: 3, offset: 10 }}>
                                 <Stack direction='horizontal' gap={2}>
@@ -70,7 +74,10 @@ const NewsLetter = ({ id, title, htmlBody, createdAt }) => {
                                 </Stack>
                             </Col>
                         </Row>
-                        <div>{ReactHtmlParser(htmlBody)}</div>
+                        <div className='editor-show mb-2 mt-2'>
+                            {ReactHtmlParser(htmlBody)}
+                        </div>
+                        <Button onClick={() => onHandleReturn()}><BsFillArrowLeftSquareFill /> Return</Button>
                     </Stack>
                 </Card.Body>
             </Card>

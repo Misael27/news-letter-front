@@ -2,7 +2,6 @@ import { useEffect, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import './App.css';
 import {
-	BrowserRouter as Router,
 	Routes,
 	Route
 } from 'react-router-dom'
@@ -14,6 +13,7 @@ import { SignupPage } from './pages/SignupPage/SignupPage';
 import { useNavigate } from 'react-router-dom';
 import { logout } from "./slices/auth";
 import EventBus from "./common/EventBus";
+import { CustomNavbar } from "./components/CustomNavbar/CustomNavbar";
 
 function App() {
 
@@ -36,9 +36,11 @@ function App() {
 	  return () => {
 		EventBus.remove("logout");
 	  };
-	}, [currentUser, logOut]);
+	}, [currentUser, logOut, navigate]);
 
 	return (
+		<>
+		{currentUser && <CustomNavbar userName={currentUser.userName} logout={logOut}/>}
 		<Routes>
 			<Route path="/signup" element={<SignupPage />} />
 			<Route path="/" element={ <MainPage /> } />
@@ -46,6 +48,7 @@ function App() {
 			<Route path="/newsletter/upsert/:id?" element={ <UpsertPage /> } />
 			<Route path="*" element={ <NotFoundPage />} />
 		</Routes>
+		</>
 	);
 }
 
